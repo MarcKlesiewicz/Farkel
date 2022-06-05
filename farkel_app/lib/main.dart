@@ -1,4 +1,9 @@
+import 'package:farkel_app/widgets/add_player_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'models/player_model.dart';
+// ignore_for_file: prefer_const_constructors
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Farkel',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       home: const MyHomePage(title: 'Farkel'),
     );
@@ -28,37 +34,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<PlayerModel> players = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: Color(0xff457b9d),
+        title: Center(
+            child: Text(
+          'Farkel',
+          style: GoogleFonts.amaticSc(
+              fontSize: 38, fontWeight: FontWeight.bold, color: Colors.white),
+        )),
+      ),
+      body: Container(
+        color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: players.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                color: Color(0xff8d99ae),
+                child: ListTile(
+                  textColor: Colors.white,
+                  leading: Text(
+                    players[index].name,
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => _openAddPlayerDialog(context),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  _openAddPlayerDialog(BuildContext conext) async {
+    showDialog(context: context, builder: (context) => AddPlayerDialog())
+        .then((value) {
+      setState(() {
+        players.add(value);
+      });
+    });
   }
 }
