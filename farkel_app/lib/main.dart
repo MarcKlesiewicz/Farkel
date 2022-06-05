@@ -1,4 +1,5 @@
 import 'package:farkel_app/widgets/add_player_dialog.dart';
+import 'package:farkel_app/widgets/point_input.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -52,34 +53,52 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.black,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-            itemCount: players.length,
-            itemBuilder: (BuildContext context, int index) {
-              final player = players[index];
-              return Dismissible(
-                onDismissed: ((direction) {
-                  setState(() {
-                    players.removeAt(index);
-                  });
-                }),
-                key: Key(player.toString()),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xff8d99ae),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: ListTile(
-                        textColor: Colors.white,
-                        title: Text(player.name),
-                        trailing: Text(player.score.toString()),
-                      ),
-                    ),
-                    SizedBox(height: 5)
-                  ],
+          child: Column(
+            children: [
+              PointInput(onAdd: () {}, onDismissed: () {}),
+              Text(
+                'Spillere',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
-              );
-            },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: players.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final player = players[index];
+                    return Dismissible(
+                      onDismissed: ((direction) {
+                        setState(() {
+                          players.removeAt(index);
+                        });
+                      }),
+                      key: Key(player.toString()),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Color(0xff8d99ae),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              textColor: Colors.white,
+                              title: Text(player.name),
+                              trailing: Text(player.score.toString()),
+                            ),
+                          ),
+                          SizedBox(height: 5)
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
