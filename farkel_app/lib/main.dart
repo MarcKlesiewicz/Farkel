@@ -55,13 +55,28 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView.builder(
             itemCount: players.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                color: Color(0xff8d99ae),
-                child: ListTile(
-                  textColor: Colors.white,
-                  leading: Text(
-                    players[index].name,
-                  ),
+              final player = players[index];
+              return Dismissible(
+                onDismissed: ((direction) {
+                  setState(() {
+                    players.removeAt(index);
+                  });
+                }),
+                key: Key(player.toString()),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xff8d99ae),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: ListTile(
+                        textColor: Colors.white,
+                        title: Text(player.name),
+                        trailing: Text(player.score.toString()),
+                      ),
+                    ),
+                    SizedBox(height: 5)
+                  ],
                 ),
               );
             },
