@@ -35,7 +35,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<PlayerModel> players = [];
+  List<PlayerModel> _players = [];
+  PlayerModel _selectedPlayer = PlayerModel('', 0);
+  TextEditingController _pointController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              PointInput(onAdd: () {}, onDismissed: () {}),
+              PointInput(
+                onAdd: _addPoint,
+                onDismissed: () {},
+                pointController: _pointController,
+              ),
               Text(
                 'Spillere',
                 style: TextStyle(
@@ -69,13 +75,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: players.length,
+                  itemCount: _players.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final player = players[index];
+                    final player = _players[index];
                     return Dismissible(
                       onDismissed: ((direction) {
                         setState(() {
-                          players.removeAt(index);
+                          _selectedPlayer = PlayerModel('', 0);
+                          _players.removeAt(index);
                         });
                       }),
                       key: Key(player.toString()),
@@ -83,9 +90,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Color(0xff8d99ae),
+                                color: _selectedPlayer.name == player.name
+                                    ? Colors.orange
+                                    : Color(0xff8d99ae),
                                 borderRadius: BorderRadius.circular(10)),
                             child: ListTile(
+                              onTap: () {
+                                setState(() {
+                                  _selectedPlayer = player;
+                                });
+                              },
                               textColor: Colors.white,
                               title: Text(player.name),
                               trailing: Text(player.score.toString()),
@@ -114,8 +128,20 @@ class _MyHomePageState extends State<MyHomePage> {
     showDialog(context: context, builder: (context) => AddPlayerDialog())
         .then((value) {
       setState(() {
-        players.add(value);
+        _players.add(value);
       });
+    });
+  }
+
+  _addPoint() {
+    if (_selectedPlayer.name == '') return;
+    setState(() {
+      for (var player in _players) {
+        if (_selectedPlayer.name == player.name) {
+          player.score += int.parse(_pointController.text);
+          _pointController.clear();
+        }
+      }
     });
   }
 }

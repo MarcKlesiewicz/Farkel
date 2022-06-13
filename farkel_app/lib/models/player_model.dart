@@ -1,6 +1,6 @@
 class PlayerModel {
   final String name;
-  final int score;
+  int score;
 
   PlayerModel(this.name, this.score);
 }

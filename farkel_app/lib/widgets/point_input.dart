@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 class PointInput extends StatelessWidget {
   final Function() onAdd;
   final Function() onDismissed;
-  const PointInput({Key? key, required this.onAdd, required this.onDismissed})
+  final TextEditingController pointController;
+  const PointInput(
+      {Key? key,
+      required this.onAdd,
+      required this.onDismissed,
+      required this.pointController})
       : super(key: key);
 
   @override
@@ -15,6 +20,7 @@ class PointInput extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 100, right: 100),
           child: TextFormField(
+            controller: pointController,
             keyboardType: TextInputType.number,
             textAlignVertical: TextAlignVertical.center,
             textAlign: TextAlign.center,
