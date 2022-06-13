@@ -135,13 +135,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _addPoint() {
     if (_selectedPlayer.name == '') return;
-    setState(() {
-      for (var player in _players) {
-        if (_selectedPlayer.name == player.name) {
-          player.score += int.parse(_pointController.text);
+    for (var i = 0; i < _players.length; i++) {
+      if (_selectedPlayer == _players[i]) {
+        setState(() {
+          _players[i].score += int.parse(_pointController.text);
           _pointController.clear();
-        }
+          if (_selectedPlayer.name == _players.last.name) {
+            _selectedPlayer = _players.first;
+          } else {
+            _selectedPlayer = _players[i + 1];
+          }
+        });
       }
-    });
+    }
   }
 }
