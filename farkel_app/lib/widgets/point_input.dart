@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 
 // ignore_for_file: prefer_const_constructors
 class PointInput extends StatelessWidget {
-  final Function() onAdd;
-  final Function() onDismissed;
+  final Function() onValidate;
   final TextEditingController pointController;
   const PointInput(
-      {Key? key,
-      required this.onAdd,
-      required this.onDismissed,
-      required this.pointController})
+      {Key? key, required this.onValidate, required this.pointController})
       : super(key: key);
 
   @override
@@ -41,26 +37,13 @@ class PointInput extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: onDismissed,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Icon(Icons.error_outline),
-              ),
-              style: ElevatedButton.styleFrom(primary: Colors.red),
-            ),
-            ElevatedButton(
-              onPressed: onAdd,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Icon(Icons.arrow_forward),
-              ),
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-            ),
-          ],
+        ElevatedButton(
+          onPressed: onValidate,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Icon(Icons.arrow_forward),
+          ),
+          style: ElevatedButton.styleFrom(primary: Colors.green),
         )
       ],
     );

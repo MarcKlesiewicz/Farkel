@@ -36,8 +36,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<PlayerModel> _players = [];
-  PlayerModel _selectedPlayer = PlayerModel('', 0);
-  TextEditingController _pointController = TextEditingController();
+  PlayerModel _selectedPlayer = PlayerModel('', 0, 0);
+  final TextEditingController _pointController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Center(
             child: Text(
           'Farkel',
-          style: GoogleFonts.amaticSc(
-              fontSize: 38, fontWeight: FontWeight.bold, color: Colors.white),
+          style: GoogleFonts.acme(fontSize: 28, color: Colors.white),
         )),
       ),
       body: Container(
@@ -58,9 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               PointInput(
-                onAdd: _addPoint,
-                onDismissed: () {},
+                onValidate: _validateScore,
                 pointController: _pointController,
+              ),
+              SizedBox(
+                height: 10,
               ),
               Text(
                 'Spillere',
@@ -81,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Dismissible(
                       onDismissed: ((direction) {
                         setState(() {
-                          _selectedPlayer = PlayerModel('', 0);
+                          _selectedPlayer = PlayerModel('', 0, 0);
                           _players.removeAt(index);
                         });
                       }),
@@ -101,7 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 });
                               },
                               textColor: Colors.white,
-                              title: Text(player.name),
+                              title: Text(
+                                player.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              subtitle: Text(
+                                'streak: ${player.streak}',
+                              ),
                               trailing: Text(player.score.toString()),
                             ),
                           ),
@@ -118,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openAddPlayerDialog(context),
-        tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
@@ -133,19 +140,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _addPoint() {
+  _validateScore() {
     if (_selectedPlayer.name == '') return;
     for (var i = 0; i < _players.length; i++) {
       if (_selectedPlayer == _players[i]) {
         setState(() {
-          _players[i].score += int.parse(_pointController.text);
+          if (_pointController.text != '') {
+            _players[i].score += int.parse(_pointController.text);
+            _players[i].streak++;
+          } else {
+            _players[i].streak = 0;
+          }
           _pointController.clear();
+
           if (_selectedPlayer.name == _players.last.name) {
             _selectedPlayer = _players.first;
           } else {
             _selectedPlayer = _players[i + 1];
           }
         });
+        return;
       }
     }
   }

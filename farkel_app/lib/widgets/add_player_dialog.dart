@@ -38,7 +38,7 @@ class AddPlayerDialog extends StatelessWidget {
                         return;
                       } else {
                         Navigator.pop(
-                            context, PlayerModel(_nameController.text, 0));
+                            context, PlayerModel(_nameController.text, 0, 0));
                       }
                     },
                     child: Text('Tilføj'))
