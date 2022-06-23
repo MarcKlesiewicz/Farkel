@@ -140,6 +140,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _openEndgameDialog(BuildContext context) {
+    showDialog(
+        context: context, builder: (context) => _openEndgameDialog(context));
+  }
+
   _validateScore() {
     if (_selectedPlayer.name == '') return;
     for (var i = 0; i < _players.length; i++) {
@@ -148,6 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
           if (_pointController.text != '') {
             _players[i].score += int.parse(_pointController.text);
             _players[i].streak++;
+            if (_players[i].score >= 10000) {
+              _openEndgameDialog(context);
+            }
           } else {
             _players[i].streak = 0;
           }
