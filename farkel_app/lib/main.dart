@@ -141,10 +141,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _openEndgameDialog(BuildContext context) {
+  _openEndgameDialog(BuildContext context, String name) {
     showDialog(
       context: context,
-      builder: (context) => EndgameDialog(name: _selectedPlayer.name),
+      builder: (context) => EndgameDialog(name: name),
     );
   }
 
@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
             _players[i].score += int.parse(_pointController.text);
             _players[i].streak++;
             if (_players[i].score >= 10000) {
-              _openEndgameDialog(context);
+              _openEndgameDialog(context, _players[i].name);
             }
           } else {
             _players[i].streak = 0;
