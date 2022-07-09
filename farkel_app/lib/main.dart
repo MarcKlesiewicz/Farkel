@@ -1,4 +1,5 @@
 import 'package:farkel_app/widgets/add_player_dialog.dart';
+import 'package:farkel_app/widgets/endgame_dialog.dart';
 import 'package:farkel_app/widgets/point_input.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -142,7 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _openEndgameDialog(BuildContext context) {
     showDialog(
-        context: context, builder: (context) => _openEndgameDialog(context));
+      context: context,
+      builder: (context) => EndgameDialog(name: _selectedPlayer.name),
+    );
   }
 
   _validateScore() {
